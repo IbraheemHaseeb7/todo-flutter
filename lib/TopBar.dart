@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class TopBar extends StatefulWidget {
-  Function(String) addItem;
   List<String> items;
-  TopBar({ super.key, required this.addItem, required this.items });
+  Function(String) addItem;
+  TopBar({super.key, required this.items, required this.addItem});
 
   @override
   TopBarState createState() {
@@ -12,15 +12,7 @@ class TopBar extends StatefulWidget {
 }
 
 class TopBarState extends State<TopBar> {
-
   TextEditingController tec = TextEditingController();
-
-  void _addItem() {
-    setState(() {
-      widget.items.add(tec.text);
-      tec.clear();
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,34 +23,33 @@ class TopBarState extends State<TopBar> {
         direction: Axis.horizontal,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Container(
-              width: 200,
-              height: 30,
-              decoration: const BoxDecoration(
-                color: Colors.black26,
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              ),
-              child:
-              Scaffold(backgroundColor: Colors.transparent ,body:
-                TextField(
-                  controller: tec,
-                  decoration: const InputDecoration(
-                    label: Text("todo"),
-                    hintText: "Enter your todo item",
-                    hintStyle: TextStyle(
-                      color: Colors.blueGrey
+          Expanded(
+              child: Container(
+                  margin: EdgeInsets.only(right: 10),
+                  height: 30,
+                  decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      color: Colors.transparent),
+                  child: Scaffold(
+                    backgroundColor: Colors.transparent,
+                    body: TextField(
+                      controller: tec,
+                      decoration: const InputDecoration(
+                        hintText: "Add Item",
+                        prefixIcon: Icon(Icons.add),
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 10.0),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(5))),
+                      ),
+                      style: const TextStyle(color: Colors.white),
                     ),
-                    contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                    border: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
-                  ),
-                  style: const TextStyle(
-                    color: Colors.white
-                  ),
-                ),
-              )
-          ),
+                  ))),
           ElevatedButton(
-            onPressed: _addItem,
+            onPressed: () {
+              widget.addItem(tec.text);
+              tec.clear();
+            },
             child: const Text('Add'),
           ),
         ],

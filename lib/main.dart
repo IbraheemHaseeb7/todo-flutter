@@ -25,9 +25,8 @@ class MyApp extends StatelessWidget {
 //===================================================
 
 class MyHomePage extends StatefulWidget {
-
   final String title;
-  MyHomePage({ super.key, required this.title });
+  MyHomePage({super.key, required this.title});
 
   @override
   MyHomePageState createState() {
@@ -36,38 +35,41 @@ class MyHomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends State<MyHomePage> {
+  List<String> items = [];
 
-  List<String> items = ["first", "second", "third"];
   void addItem(String item) {
     setState(() {
       items.add(item);
     });
   }
 
+  void deleteItem(String item) {
+    setState(() {
+      items.remove(item);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return (
-        Scaffold(
-          backgroundColor: Colors.black26,
-          body: Flex(
+    return (Scaffold(
+        backgroundColor: Colors.black26,
+        body: Flex(
           direction: Axis.vertical,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Container(
               padding: const EdgeInsets.all(10),
-              child:
-              Text(widget.title, style: const TextStyle(color: Colors.white, fontSize: 20)),
+              child: Text(widget.title,
+                  style: const TextStyle(color: Colors.white, fontSize: 20)),
             ),
             TopBar(items: items, addItem: addItem),
             Expanded(
-              child:
-              ListView.builder(itemCount: items.length,itemBuilder: (BuildContext context, int index) {
-                return Task(title: items[index]);
-              })
-            ),
-        ],
-        )
-      )
-    );
+                child: ListView.builder(
+                    itemCount: items.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Task(title: items[index], deleteItem: deleteItem);
+                    })),
+          ],
+        )));
   }
 }
